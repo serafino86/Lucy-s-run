@@ -843,6 +843,12 @@
                 return; // Skip drawing to create blink effect
             }
 
+            const stageSprite = getProcessedLucyStage(stage);
+            if (stageSprite) {
+                ctx.drawImage(stageSprite, this.x - this.width * 0.55, this.y - this.height * 0.55, this.width * 2.1, this.height * 2.1);
+                return;
+            }
+
             const skin = '#ffd1b8';
             const hair = stage >= 4 ? '#ff4db8' : '#6f3a1d';
             const outfit = stage >= 3 ? '#ff69b4' : '#4bd3ff';
@@ -944,6 +950,7 @@
             this.y = canvas.height - 100 - this.height;
             this.type = type;
             this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.judgeVariant = Math.floor(Math.random() * 3);
         }
         
         update() {
@@ -951,6 +958,20 @@
         }
         
         draw() {
+            const judgeSprite = getProcessedJudge(this.judgeVariant);
+            if (judgeSprite) {
+                const drawX = this.x - this.width * 0.35;
+                const drawY = this.y - this.height * 0.25;
+                const drawW = this.width * 1.7;
+                const drawH = this.height * 1.45;
+                ctx.save();
+                ctx.translate(drawX + drawW, drawY);
+                ctx.scale(-1, 1);
+                ctx.drawImage(judgeSprite, 0, 0, drawW, drawH);
+                ctx.restore();
+                return;
+            }
+
             const unit = Math.max(3, Math.round(this.width / 12));
             const ox = this.x;
             const oy = this.y;
@@ -1086,12 +1107,66 @@
     let currentMusic = null;
     let pendingMusicLevel = null;
     const backgroundImages = {};
+    const lucyStageImages = [];
+    const lucyStageProcessed = [];
+    const judgeImages = [];
+    const judgeProcessed = [];
 
     Object.values(CONFIG.levels).forEach(level => {
         const img = new Image();
         img.src = level.background;
         backgroundImages[level.background] = img;
     });
+
+    for (let stage = 0; stage <= 5; stage++) {
+        const img = new Image();
+        img.src = `assets/lucy-stages/lucy-stage-${stage}.jpg`;
+        lucyStageImages[stage] = img;
+        lucyStageProcessed[stage] = null;
+    }
+
+    for (let judge = 1; judge <= 3; judge++) {
+        const img = new Image();
+        img.src = `assets/judges/judge-${judge}.jpg`;
+        judgeImages[judge - 1] = img;
+        judgeProcessed[judge - 1] = null;
+    }
+
+    function chromaProcess(source, cache, cacheIndex) {
+        if (!source || !source.complete || !source.naturalWidth) return null;
+        if (cache[cacheIndex]) return cache[cacheIndex];
+
+        const off = document.createElement('canvas');
+        off.width = source.naturalWidth;
+        off.height = source.naturalHeight;
+        const offCtx = off.getContext('2d');
+        offCtx.drawImage(source, 0, 0);
+        const imageData = offCtx.getImageData(0, 0, off.width, off.height);
+        const data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            if (g > 150 && g > r * 1.25 && g > b * 1.25) {
+                data[i + 3] = 0;
+            }
+        }
+
+        offCtx.putImageData(imageData, 0, 0);
+        cache[cacheIndex] = off;
+        return off;
+    }
+
+    function getProcessedLucyStage(stage) {
+        const source = lucyStageImages[stage];
+        return chromaProcess(source, lucyStageProcessed, stage);
+    }
+
+    function getProcessedJudge(index) {
+        const source = judgeImages[index];
+        return chromaProcess(source, judgeProcessed, index);
+    }
     
     function initGame(level) {
         const isNewLevel = gameState.currentLevel !== level;
