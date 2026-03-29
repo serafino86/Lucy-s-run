@@ -7,13 +7,12 @@
     <meta name="description" content="✨ LUCY'S RUN ✨ - Endless runner retrò con le canzoni di Marta La Noce">
     <meta name="theme-color" content="#FF1493">
 
-```
 <!-- Open Graph / Facebook / WhatsApp -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://serafino86.github.io/Lucy-s-run/">
 <meta property="og:title" content="LUCY'S RUN - Marta La Noce">
 <meta property="og:description" content="🦋 Endless runner retrò 8-bit con le canzoni di Marta La Noce! Aiuta Lucy nel suo viaggio di trasformazione attraverso le 4 stagioni 🌸☀️🍂❄️">
-<meta property="og:image" content="https://serafino86.github.io/Lucy-s-run/share-preview.jpg">
+<meta property="og:image" content="https://serafino86.github.io/Lucy-s-run/share-preview.jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
@@ -22,7 +21,7 @@
 <meta name="twitter:url" content="https://serafino86.github.io/Lucy-s-run/">
 <meta name="twitter:title" content="LUCY'S RUN - Marta La Noce">
 <meta name="twitter:description" content="🦋 Endless runner retrò 8-bit con le canzoni di Marta La Noce!">
-<meta name="twitter:image" content="https://serafino86.github.io/Lucy-s-run/share-preview.jpg">
+<meta name="twitter:image" content="https://serafino86.github.io/Lucy-s-run/share-preview.jpeg">
 
 <title>✨ LUCY'S RUN ✨ - Marta La Noce</title>
 <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTFVDWSdTIFJVTiIsInNob3J0X25hbWUiOiJMdWN5J3MgUnVuIiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwMDAwMDAiLCJ0aGVtZV9jb2xvciI6IiNGRjE0OTMifQ==">
@@ -38,7 +37,9 @@
     
     body {
         font-family: 'Press Start 2P', monospace;
-        background: #000;
+        background:
+            radial-gradient(circle at top, rgba(255, 20, 147, 0.18), transparent 35%),
+            linear-gradient(180deg, #05010d 0%, #140428 100%);
         color: #fff;
         overflow: hidden;
         touch-action: none;
@@ -65,6 +66,13 @@
         justify-content: center;
         background: linear-gradient(180deg, #1a0033 0%, #330066 100%);
         overflow-y: auto;
+    }
+
+    #titleScreen,
+    #levelMenu {
+        background:
+            linear-gradient(180deg, rgba(7, 4, 20, 0.64), rgba(20, 2, 40, 0.86)),
+            url('assets-retro-8bit-dream-pop.jpg') center/cover no-repeat;
     }
     
     .screen.active {
@@ -125,10 +133,11 @@
         width: clamp(180px, 45vw, 280px);
         height: clamp(180px, 45vw, 280px);
         margin: 20px;
-        background: linear-gradient(135deg, #FF1493 0%, #FF69B4 25%, #87CEEB 50%, #00FFFF 75%, #FFD700 100%);
-        background-size: 400% 400%;
-        border-radius: 50%;
-        border: 5px solid #FFFFFF;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)),
+            url('assets-retro-8bit-dream-pop.jpg') center/cover no-repeat;
+        border-radius: 28px;
+        border: 4px solid #FFFFFF;
         box-shadow: 
             0 0 40px rgba(255, 20, 147, 0.9),
             0 0 80px rgba(0, 255, 255, 0.6),
@@ -203,6 +212,19 @@
         margin: 10px;
         color: #FF69B4;
         text-align: center;
+    }
+
+    .journey-copy {
+        max-width: 760px;
+        margin: 8px 20px 16px;
+        padding: 14px 18px;
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        background: rgba(8, 4, 20, 0.62);
+        color: #ffe7fb;
+        text-align: center;
+        line-height: 1.8;
+        font-size: clamp(10px, 2.6vw, 13px);
+        box-shadow: 0 0 30px rgba(255, 20, 147, 0.2);
     }
     
     .social-links {
@@ -421,6 +443,14 @@
         margin-top: 5px;
         position: relative;
     }
+
+    .transformation-stage-label {
+        margin-top: 8px;
+        text-align: center;
+        color: #ffe7fb;
+        font-size: clamp(10px, 2.5vw, 12px);
+        text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+    }
     
     .transformation-fill {
         height: 100%;
@@ -535,14 +565,13 @@
         }
     }
 </style>
-```
-
 </head>
 <body>
     <!-- Title Screen -->
     <div id="titleScreen" class="screen active">
         <div class="title-logo" id="titleLogo">LUCY'S RUN</div>
-        <div class="lucy-art">🦋</div>
+        <div class="lucy-art"></div>
+        <div class="journey-copy">Lucy parte da una forma iniziale maschile e, correndo tra le quattro stagioni, si trasforma poco a poco fino a diventare pienamente se stessa.</div>
         <div class="press-start" id="startButton">▶ PRESS START ◀</div>
         <div class="artist-credit">🎤 Un gioco di Marta La Noce 🎶</div>
         <div class="social-links">
@@ -551,8 +580,6 @@
             <a href="https://youtube.com/@la_noce?si=Hb4I436pbe03vc9I" target="_blank">💙 YouTube</a>
         </div>
     </div>
-
-```
 <!-- Easter Egg -->
 <div class="easter-egg" id="easterEgg">
     <div class="rainbow">🌈 VIVA LA LIBERTÀ 🏳️‍⚧️</div>
@@ -608,6 +635,7 @@
             <div class="transformation-fill" id="transformationFill"></div>
             <div class="transformation-text" id="transformationText">TRASFORMAZIONE: 0%</div>
         </div>
+        <div class="transformation-stage-label" id="transformationStageLabel">STADIO: FORMA INIZIALE</div>
     </div>
     <div class="game-over-screen" id="gameOver">
         <div class="game-over-title">GAME OVER!</div>
@@ -638,6 +666,7 @@
             spring: {
                 name: '🌸 PRIMAVERA',
                 song: 'music/primavera.mp3',
+                background: 'assets/season-spring-bg.jpg',
                 colors: {
                     sky: ['#FFB3D9', '#B3E5FC'],
                     ground: '#90EE90',
@@ -649,6 +678,7 @@
             summer: {
                 name: '☀️ ESTATE',
                 song: 'music/estate.mp3',
+                background: 'assets/season-summer-bg.jpg',
                 colors: {
                     sky: ['#FFD700', '#FF8C00'],
                     ground: '#F4A460',
@@ -660,6 +690,7 @@
             autumn: {
                 name: '🍂 AUTUNNO',
                 song: 'music/autunno.mp3',
+                background: 'assets/season-autumn-bg.jpg',
                 colors: {
                     sky: ['#FF8C00', '#8B4513'],
                     ground: '#CD853F',
@@ -671,6 +702,7 @@
             winter: {
                 name: '❄️ INVERNO',
                 song: 'music/inverno.mp3',
+                background: 'assets/season-winter-bg.jpg',
                 colors: {
                     sky: ['#87CEEB', '#4169E1'],
                     ground: '#FFFFFF',
@@ -681,6 +713,15 @@
             }
         }
     };
+
+    const TRANSFORMATION_LABELS = [
+        'FORMA INIZIALE',
+        'CAPELLI IN CRESCITA',
+        'PRIMI SEGNI DI LUCY',
+        'ABITO E PRESENZA',
+        'MAKEUP E ACCESSORI',
+        'LUCY COMPLETA'
+    ];
     
     // Game State
     let gameState = {
@@ -801,89 +842,86 @@
             if (this.invincibleFrames > 0 && Math.floor(gameState.frame / 5) % 2 === 0) {
                 return; // Skip drawing to create blink effect
             }
-            
-            ctx.fillStyle = color;
-            // Body
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-            
-            // Eyes (proportional to size)
-            const eyeSize = Math.max(4, this.width / 5);
-            const eyeOffset = this.width / 5;
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(this.x + eyeOffset, this.y + this.height * 0.25, eyeSize, eyeSize);
-            ctx.fillRect(this.x + this.width - eyeOffset - eyeSize, this.y + this.height * 0.25, eyeSize, eyeSize);
-            
-            // Pupils
-            const pupilSize = Math.max(2, eyeSize / 2);
-            ctx.fillStyle = '#000000';
-            ctx.fillRect(this.x + eyeOffset + eyeSize/4, this.y + this.height * 0.25 + eyeSize/4, pupilSize, pupilSize);
-            ctx.fillRect(this.x + this.width - eyeOffset - eyeSize + eyeSize/4, this.y + this.height * 0.25 + eyeSize/4, pupilSize, pupilSize);
-            
-            // Smile
-            const smileWidth = this.width * 0.4;
-            const smileHeight = Math.max(3, this.height / 10);
-            ctx.fillRect(this.x + (this.width - smileWidth) / 2, this.y + this.height * 0.7, smileWidth, smileHeight);
-            
-            // TRANSFORMATION STAGES
-            // Stage 0: Short hair (masculine)
-            if (stage === 0) {
-                ctx.fillStyle = '#8B4513'; // Brown hair
-                ctx.fillRect(this.x, this.y - this.height * 0.15, this.width, this.height * 0.15);
-            }
-            
-            // Stage 1: Growing hair
-            if (stage >= 1) {
-                ctx.fillStyle = '#8B4513';
-                ctx.fillRect(this.x, this.y - this.height * 0.2, this.width, this.height * 0.2);
-                ctx.fillRect(this.x - this.width * 0.1, this.y, this.width * 0.1, this.height * 0.3);
-                ctx.fillRect(this.x + this.width, this.y, this.width * 0.1, this.height * 0.3);
-            }
-            
-            // Stage 2: Long hair + earrings
-            if (stage >= 2) {
-                ctx.fillStyle = '#8B4513';
-                ctx.fillRect(this.x - this.width * 0.15, this.y, this.width * 0.15, this.height * 0.5);
-                ctx.fillRect(this.x + this.width, this.y, this.width * 0.15, this.height * 0.5);
-                
-                // Earrings
-                ctx.fillStyle = '#FFD700';
-                ctx.fillRect(this.x - this.width * 0.08, this.y + this.height * 0.3, this.width * 0.08, this.width * 0.08);
-                ctx.fillRect(this.x + this.width, this.y + this.height * 0.3, this.width * 0.08, this.width * 0.08);
-            }
-            
-            // Stage 3: Dress/skirt
-            if (stage >= 3) {
-                ctx.fillStyle = '#FF69B4'; // Pink dress
-                // Triangle shape for dress
-                ctx.fillRect(this.x + this.width * 0.1, this.y + this.height * 0.5, this.width * 0.8, this.height * 0.15);
-                ctx.fillRect(this.x, this.y + this.height * 0.65, this.width, this.height * 0.35);
-            }
-            
-            // Stage 4: Makeup + accessories
-            if (stage >= 4) {
-                // Lipstick
-                ctx.fillStyle = '#FF1493';
-                ctx.fillRect(this.x + this.width * 0.3, this.y + this.height * 0.72, this.width * 0.4, smileHeight);
-                
-                // Eyelashes
-                ctx.fillStyle = '#000000';
-                ctx.fillRect(this.x + eyeOffset - 2, this.y + this.height * 0.25 - 3, eyeSize + 4, 2);
-                ctx.fillRect(this.x + this.width - eyeOffset - eyeSize - 2, this.y + this.height * 0.25 - 3, eyeSize + 4, 2);
-                
-                // Necklace
-                ctx.fillStyle = '#FFD700';
-                ctx.fillRect(this.x + this.width * 0.2, this.y + this.height * 0.45, this.width * 0.6, this.height * 0.08);
-            }
-            
-            // Stage 5: Full transformation - special glow
+
+            const skin = '#ffd1b8';
+            const hair = stage >= 4 ? '#ff4db8' : '#6f3a1d';
+            const outfit = stage >= 3 ? '#ff69b4' : '#4bd3ff';
+            const accent = '#ffd700';
+            const unit = Math.max(3, Math.round(this.width / 10));
+            const px = (dx, dy, w, h, fill) => {
+                ctx.fillStyle = fill;
+                ctx.fillRect(this.x + dx * unit, this.y + dy * unit, w * unit, h * unit);
+            };
+
             if (stage >= 5) {
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = '#FF1493';
-                // Crown/tiara
-                ctx.fillStyle = '#FFD700';
-                ctx.fillRect(this.x + this.width * 0.2, this.y - this.height * 0.25, this.width * 0.6, this.height * 0.1);
-                ctx.fillRect(this.x + this.width * 0.35, this.y - this.height * 0.35, this.width * 0.1, this.height * 0.1);
-                ctx.fillRect(this.x + this.width * 0.55, this.y - this.height * 0.35, this.width * 0.1, this.height * 0.1);
+                ctx.shadowBlur = 18;
+                ctx.shadowColor = 'rgba(255, 20, 147, 0.8)';
+            }
+
+            // Hair back layer
+            px(2, 0, 6, 1, hair);
+            if (stage >= 1) {
+                px(1, 1, 1, stage >= 4 ? 5 : 3, hair);
+                px(8, 1, 1, stage >= 4 ? 5 : 3, hair);
+            }
+            if (stage >= 2) {
+                px(0, 2, 1, 3, hair);
+                px(9, 2, 1, 3, hair);
+            }
+
+            // Head
+            px(2, 1, 6, 4, skin);
+            px(3, 0, 4, 1, hair);
+
+            // Eyes
+            px(3, 2, 1, 1, '#ffffff');
+            px(6, 2, 1, 1, '#ffffff');
+            px(3, 2, 1, 1, '#111111');
+            px(6, 2, 1, 1, '#111111');
+
+            // Face details
+            if (stage >= 4) {
+                px(2, 2, 1, 1, '#ff9ccd');
+                px(7, 2, 1, 1, '#ff9ccd');
+                px(4, 4, 2, 1, '#ff2f92');
+            } else {
+                px(4, 4, 2, 1, '#7a1f35');
+            }
+
+            // Neck and torso
+            px(4, 5, 2, 1, skin);
+            if (stage < 3) {
+                px(3, 6, 4, 3, outfit);
+            } else {
+                px(3, 6, 4, 2, outfit);
+                px(2, 8, 6, 2, outfit);
+            }
+
+            // Arms
+            px(2, 6, 1, 3, skin);
+            px(7, 6, 1, 3, skin);
+
+            // Legs
+            px(3, 9, 1, 3, '#f7c7a1');
+            px(6, 9, 1, 3, '#f7c7a1');
+            if (stage >= 3) {
+                px(3, 11, 1, 1, '#ff4db8');
+                px(6, 11, 1, 1, '#ff4db8');
+            }
+
+            // Accessories and transformation cues
+            if (stage >= 2) {
+                px(1, 4, 1, 1, accent);
+                px(8, 4, 1, 1, accent);
+            }
+            if (stage >= 4) {
+                px(3, 1, 4, 1, '#ff86d4');
+                px(4, 6, 2, 1, accent);
+            }
+            if (stage >= 5) {
+                px(4, -1, 2, 1, accent);
+                px(3, -2, 1, 1, accent);
+                px(6, -2, 1, 1, accent);
                 ctx.shadowBlur = 0;
             }
         }
@@ -900,8 +938,8 @@
     
     class Obstacle {
         constructor(type, colors) {
-            this.width = 30 + Math.random() * 30;
-            this.height = 40 + Math.random() * 40;
+            this.width = 44 + Math.random() * 18;
+            this.height = 58 + Math.random() * 18;
             this.x = canvas.width;
             this.y = canvas.height - 100 - this.height;
             this.type = type;
@@ -913,22 +951,55 @@
         }
         
         draw() {
-            ctx.fillStyle = this.color;
-            
-            // Different shapes for different obstacle types
-            if (this.type.includes('flower') || this.type.includes('ball')) {
-                // Circle-ish
-                ctx.fillRect(this.x + 5, this.y, this.width - 10, this.height);
-                ctx.fillRect(this.x, this.y + 5, this.width, this.height - 10);
-            } else if (this.type.includes('fence') || this.type.includes('castle')) {
-                // Rectangular with top notches
-                for (let i = 0; i < 3; i++) {
-                    ctx.fillRect(this.x + i * (this.width/3), this.y, this.width/4, this.height);
-                }
-            } else {
-                // Default rectangle
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-            }
+            const unit = Math.max(3, Math.round(this.width / 12));
+            const ox = this.x;
+            const oy = this.y;
+            const skin = '#ffd3b5';
+            const coat = this.color;
+            const hair = this.type.includes('snow') || this.type.includes('ice') ? '#dce7ff' : '#3e1c0c';
+
+            const px = (dx, dy, w, h, fill) => {
+                ctx.fillStyle = fill;
+                ctx.fillRect(ox + dx * unit, oy + dy * unit, w * unit, h * unit);
+            };
+
+            // Ombra a terra
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+            ctx.fillRect(ox + unit, oy + this.height - unit * 0.5, unit * 7, unit);
+
+            // Capelli e testa
+            px(2, 0, 4, 1, hair);
+            px(1, 1, 6, 4, skin);
+            px(1, 0, 1, 3, hair);
+            px(6, 0, 1, 3, hair);
+
+            // Sopracciglia e occhi arrabbiati
+            px(2, 2, 1, 1, '#111111');
+            px(5, 2, 1, 1, '#111111');
+            px(2, 1, 1, 1, '#111111');
+            px(5, 1, 1, 1, '#111111');
+            px(3, 3, 1, 1, '#7a102f');
+            px(4, 3, 1, 1, '#7a102f');
+
+            // Corpo
+            px(2, 5, 4, 4, coat);
+
+            // Braccio dietro
+            px(1, 5, 1, 3, skin);
+
+            // Braccio frontale che punta verso Lucy
+            px(6, 5, 1, 2, skin);
+            px(7, 5, 2, 1, skin);
+            px(9, 5, 1, 1, '#fff2b3');
+
+            // Gamba
+            px(2, 9, 1, 3, '#2a2144');
+            px(5, 9, 1, 3, '#2a2144');
+
+            // Aura da "giudizio"
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+            ctx.lineWidth = Math.max(1, unit * 0.35);
+            ctx.strokeRect(ox, oy, unit * 10, unit * 12);
         }
         
         getBounds() {
@@ -1013,6 +1084,14 @@
     let powerUps = [];
     let particles = [];
     let currentMusic = null;
+    let pendingMusicLevel = null;
+    const backgroundImages = {};
+
+    Object.values(CONFIG.levels).forEach(level => {
+        const img = new Image();
+        img.src = level.background;
+        backgroundImages[level.background] = img;
+    });
     
     function initGame(level) {
         const isNewLevel = gameState.currentLevel !== level;
@@ -1032,6 +1111,10 @@
         
         document.getElementById('hud').classList.add('active');
         document.getElementById('levelDisplay').textContent = CONFIG.levels[level].name;
+        document.getElementById('scoreDisplay').textContent = 'SCORE: 0';
+        document.getElementById('transformationFill').style.width = '0%';
+        document.getElementById('transformationText').textContent = 'TRASFORMAZIONE: 0%';
+        document.getElementById('transformationStageLabel').textContent = `STADIO: ${TRANSFORMATION_LABELS[0]}`;
         updateLivesDisplay();
         
         // Play level music only if changing level
@@ -1060,11 +1143,13 @@
         currentMusic = new Audio(songPath);
         currentMusic.loop = true; // Loop the song
         currentMusic.volume = 0.6; // 60% volume
+        pendingMusicLevel = null;
         
         // Play with error handling
         currentMusic.play().catch(() => {
             // Mobile browsers require user interaction before playing audio
             // This is normal behavior, audio will start on first tap
+            pendingMusicLevel = level;
         });
     }
     
@@ -1086,7 +1171,19 @@
         if (gameState.musicEnabled && gameState.isPlaying) {
             playMusic(gameState.currentLevel);
         } else {
+            pendingMusicLevel = null;
             stopMusic();
+        }
+    }
+
+    function ensureMusicPlayback() {
+        if (!gameState.musicEnabled || !gameState.isPlaying || !gameState.currentLevel) return;
+        if (pendingMusicLevel) {
+            playMusic(pendingMusicLevel);
+            return;
+        }
+        if (currentMusic && currentMusic.paused) {
+            currentMusic.play().catch(() => {});
         }
     }
     
@@ -1230,6 +1327,15 @@
         gradient.addColorStop(1, level.colors.sky[1]);
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Seasonal background art
+        const bgImage = backgroundImages[level.background];
+        if (bgImage && bgImage.complete) {
+            ctx.save();
+            ctx.globalAlpha = 0.72;
+            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height - 70);
+            ctx.restore();
+        }
         
         // Draw ground
         ctx.fillStyle = level.colors.ground;
@@ -1255,8 +1361,10 @@
         const transformationPercent = Math.min(100, (gameState.score / CONFIG.victoryScore) * 100);
         const fillEl = document.getElementById('transformationFill');
         const textEl = document.getElementById('transformationText');
+        const stageEl = document.getElementById('transformationStageLabel');
         if (fillEl) fillEl.style.width = transformationPercent + '%';
         if (textEl) textEl.textContent = `TRASFORMAZIONE: ${Math.floor(transformationPercent)}%`;
+        if (stageEl) stageEl.textContent = `STADIO: ${TRANSFORMATION_LABELS[gameState.transformationStage]}`;
         
         // Check victory condition
         if (gameState.score >= CONFIG.victoryScore) {
@@ -1424,6 +1532,7 @@
         // Controls
         function handleJump() {
             if (gameState.isPlaying && player) {
+                ensureMusicPlayback();
                 player.jump();
             }
         }
@@ -1453,12 +1562,7 @@
         }, { passive: false });
     });
     
-    // Service Worker for PWA
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZSkge30pOw==');
-    }
 </script>
-```
 
 </body>
 </html>
