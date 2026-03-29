@@ -1510,7 +1510,7 @@
     function showShareDialog(text) {
         alert('📱 Copia questo testo e condividilo:\n\n' + text);
     }
-    
+
     function gameLoop() {
         if (!gameState.isPlaying) return;
         
@@ -1519,53 +1519,19 @@
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Draw sky gradient
         const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
         gradient.addColorStop(0, level.colors.sky[0]);
         gradient.addColorStop(1, level.colors.sky[1]);
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Seasonal background art
         const bgImage = backgroundImages[gameState.currentConcept]?.[level.background];
         if (bgImage && bgImage.complete) {
             ctx.save();
-            ctx.globalAlpha = 0.72;
-            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height - 70);
+            ctx.globalAlpha = 0.9;
+            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
             ctx.restore();
         }
-        
-        // Draw ground
-        const groundTop = canvas.height - 100;
-        ctx.fillStyle = level.colors.ground;
-        ctx.fillRect(0, groundTop, canvas.width, 100);
-
-        if (bgImage && bgImage.complete && bgImage.naturalWidth) {
-            const sourceHeight = Math.max(120, Math.floor(bgImage.naturalHeight * 0.26));
-            const sourceY = bgImage.naturalHeight - sourceHeight;
-            ctx.save();
-            ctx.globalAlpha = 0.98;
-            ctx.drawImage(
-                bgImage,
-                0,
-                sourceY,
-                bgImage.naturalWidth,
-                sourceHeight,
-                0,
-                groundTop,
-                canvas.width,
-                100
-            );
-            ctx.restore();
-        } else {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            for (let i = 0; i < canvas.width; i += 20) {
-                ctx.fillRect(i, groundTop, 10, 100);
-            }
-        }
-
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-        ctx.fillRect(0, groundTop, canvas.width, 3);
         
         // Update player
         player.update();
