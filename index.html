@@ -793,12 +793,13 @@
     ];
     const JUDGE_MIRROR = [true, false, false];
     const LUCY_MIRROR = [false, false, false, false, false, false];
-    const ASSET_VERSION = '20260329-r4';
+    const ASSET_VERSION = '20260329-r5';
     const CONCEPTS = {
         retro: {
             label: 'Retro 8-bit',
             title: 'assets/concepts/retro/title.jpg',
             icon: 'assets/concepts/retro/icon.jpg',
+            groundPath: `assets/concepts/retro/ground.jpg?v=${ASSET_VERSION}`,
             seasonPath: season => `assets/concepts/retro/seasons/${season}.jpg?v=${ASSET_VERSION}`,
             lucyPath: stage => `assets/concepts/retro/lucy/lucy-stage-${stage}.png?v=${ASSET_VERSION}`,
             judgePath: judge => `assets/concepts/retro/judges/judge-${judge}.png?v=${ASSET_VERSION}`
@@ -807,6 +808,7 @@
             label: 'Cartoon 2.5D',
             title: 'assets/concepts/cartoon/title.jpg',
             icon: 'assets/concepts/cartoon/icon.jpg',
+            groundPath: `assets/concepts/cartoon/ground.jpg?v=${ASSET_VERSION}`,
             seasonPath: season => `assets/concepts/cartoon/seasons/${season}.jpg?v=${ASSET_VERSION}`,
             lucyPath: stage => `assets/concepts/retro/lucy/lucy-stage-${stage}.png?v=${ASSET_VERSION}`,
             judgePath: judge => `assets/concepts/retro/judges/judge-${judge}.png?v=${ASSET_VERSION}`
@@ -815,6 +817,7 @@
             label: 'Poetico Onirico',
             title: 'assets/concepts/dreamy/title.jpg',
             icon: 'assets/concepts/dreamy/icon.jpg',
+            groundPath: `assets/concepts/dreamy/ground.jpg?v=${ASSET_VERSION}`,
             seasonPath: season => `assets/concepts/dreamy/seasons/${season}.jpg?v=${ASSET_VERSION}`,
             lucyPath: stage => `assets/concepts/retro/lucy/lucy-stage-${stage}.png?v=${ASSET_VERSION}`,
             judgePath: judge => `assets/concepts/retro/judges/judge-${judge}.png?v=${ASSET_VERSION}`
@@ -823,6 +826,7 @@
             label: 'Pop Glitter',
             title: 'assets/concepts/glitter/title.jpg',
             icon: 'assets/concepts/glitter/icon.jpg',
+            groundPath: `assets/concepts/glitter/ground.jpg?v=${ASSET_VERSION}`,
             seasonPath: season => `assets/concepts/glitter/seasons/${season}.jpg?v=${ASSET_VERSION}`,
             lucyPath: stage => `assets/concepts/retro/lucy/lucy-stage-${stage}.png?v=${ASSET_VERSION}`,
             judgePath: judge => `assets/concepts/retro/judges/judge-${judge}.png?v=${ASSET_VERSION}`
@@ -1230,6 +1234,7 @@
     let currentMusic = null;
     let pendingMusicLevel = null;
     const backgroundImages = {};
+    const groundImages = {};
     const lucyStageImages = {};
     const judgeImages = {};
 
@@ -1238,6 +1243,11 @@
         if (!backgroundImages[slug]) backgroundImages[slug] = {};
         if (!lucyStageImages[slug]) lucyStageImages[slug] = [];
         if (!judgeImages[slug]) judgeImages[slug] = [];
+        if (!groundImages[slug]) {
+            const img = new Image();
+            img.src = CONCEPTS[slug].groundPath;
+            groundImages[slug] = img;
+        }
 
         Object.values(CONFIG.levels).forEach(level => {
             if (!backgroundImages[slug][level.background]) {
@@ -1536,14 +1546,25 @@
         }
         
         // Draw ground
+        const groundTop = canvas.height - 100;
+        const groundImage = groundImages[gameState.currentConcept];
         ctx.fillStyle = level.colors.ground;
-        ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
-        
-        // Ground pattern
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-        for (let i = 0; i < canvas.width; i += 20) {
-            ctx.fillRect(i, canvas.height - 100, 10, 100);
+        ctx.fillRect(0, groundTop, canvas.width, 100);
+
+        if (groundImage && groundImage.complete && groundImage.naturalWidth) {
+            ctx.save();
+            ctx.globalAlpha = 0.92;
+            ctx.drawImage(groundImage, 0, groundTop, canvas.width, 100);
+            ctx.restore();
+        } else {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            for (let i = 0; i < canvas.width; i += 20) {
+                ctx.fillRect(i, groundTop, 10, 100);
+            }
         }
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.fillRect(0, groundTop, canvas.width, 3);
         
         // Update player
         player.update();
