@@ -723,6 +723,7 @@
         'LUCY COMPLETA'
     ];
     const JUDGE_MIRROR = [true, false, false];
+    const ASSET_VERSION = '20260329-r2';
     
     // Game State
     let gameState = {
@@ -1123,13 +1124,13 @@
 
     for (let stage = 0; stage <= 5; stage++) {
         const img = new Image();
-        img.src = `assets/lucy-stages/lucy-stage-${stage}.png`;
+        img.src = `assets/lucy-stages/lucy-stage-${stage}.png?v=${ASSET_VERSION}`;
         lucyStageImages[stage] = img;
     }
 
     for (let judge = 1; judge <= 3; judge++) {
         const img = new Image();
-        img.src = `assets/judges/judge-${judge}.png`;
+        img.src = `assets/judges/judge-${judge}.png?v=${ASSET_VERSION}`;
         judgeImages[judge - 1] = img;
     }
 
