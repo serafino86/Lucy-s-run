@@ -722,6 +722,7 @@
         'MAKEUP E ACCESSORI',
         'LUCY COMPLETA'
     ];
+    const JUDGE_MIRROR = [true, false, false];
     
     // Game State
     let gameState = {
@@ -964,11 +965,15 @@
                 const drawY = this.y - this.height * 0.25;
                 const drawW = this.width * 1.7;
                 const drawH = this.height * 1.45;
-                ctx.save();
-                ctx.translate(drawX + drawW, drawY);
-                ctx.scale(-1, 1);
-                ctx.drawImage(judgeSprite, 0, 0, drawW, drawH);
-                ctx.restore();
+                if (JUDGE_MIRROR[this.judgeVariant]) {
+                    ctx.save();
+                    ctx.translate(drawX + drawW, drawY);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(judgeSprite, 0, 0, drawW, drawH);
+                    ctx.restore();
+                } else {
+                    ctx.drawImage(judgeSprite, drawX, drawY, drawW, drawH);
+                }
                 return;
             }
 
