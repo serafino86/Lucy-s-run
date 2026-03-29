@@ -660,8 +660,8 @@
         obstacleSpawnRate: 90,
         powerUpSpawnRate: 200,
         transformationStages: 5,
-        pointsPerStage: 200, // 200 punti per ogni stadio di trasformazione
-        victoryScore: 1000, // Punteggio per completare la trasformazione
+        pointsPerStage: 350, // progressione piu lenta della trasformazione
+        victoryScore: 2100, // lascia piu tempo ai vari stadi prima della forma finale
         levels: {
             spring: {
                 name: '🌸 PRIMAVERA',
@@ -723,6 +723,7 @@
         'LUCY COMPLETA'
     ];
     const JUDGE_MIRROR = [true, false, false];
+    const LUCY_MIRROR = [false, true, false, true, false, true];
     const ASSET_VERSION = '20260329-r2';
     
     // Game State
@@ -847,7 +848,19 @@
 
             const stageSprite = getProcessedLucyStage(stage);
             if (stageSprite) {
-                ctx.drawImage(stageSprite, this.x - this.width * 0.55, this.y - this.height * 0.55, this.width * 2.1, this.height * 2.1);
+                const drawX = this.x - this.width * 0.55;
+                const drawY = this.y - this.height * 0.55;
+                const drawW = this.width * 2.1;
+                const drawH = this.height * 2.1;
+                if (LUCY_MIRROR[stage]) {
+                    ctx.save();
+                    ctx.translate(drawX + drawW, drawY);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(stageSprite, 0, 0, drawW, drawH);
+                    ctx.restore();
+                } else {
+                    ctx.drawImage(stageSprite, drawX, drawY, drawW, drawH);
+                }
                 return;
             }
 
