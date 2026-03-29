@@ -724,7 +724,7 @@
     ];
     const JUDGE_MIRROR = [true, false, false];
     const LUCY_MIRROR = [false, true, false, true, false, true];
-    const ASSET_VERSION = '20260329-r3';
+    const ASSET_VERSION = '20260329-r4';
     
     // Game State
     let gameState = {
@@ -1137,7 +1137,7 @@
 
     for (let stage = 0; stage <= 5; stage++) {
         const img = new Image();
-        img.src = `assets/lucy-stages/lucy-stage-${stage}.png?v=${ASSET_VERSION}`;
+        img.src = `assets/lucy-stages/lucy-stage-${stage}-v2.png?v=${ASSET_VERSION}`;
         lucyStageImages[stage] = img;
     }
 
