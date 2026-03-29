@@ -214,6 +214,53 @@
         text-align: center;
     }
 
+    .concept-switcher {
+        width: min(920px, 92vw);
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin: 10px auto 12px;
+        padding: 0 10px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .concept-chip {
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        background: rgba(8, 4, 20, 0.72);
+        color: #fff;
+        padding: 8px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        text-align: center;
+        font-family: 'Press Start 2P', monospace;
+    }
+
+    .concept-chip:hover,
+    .concept-chip.active {
+        transform: translateY(-2px);
+        border-color: #FFD700;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);
+    }
+
+    .concept-thumb {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border: 2px solid rgba(255, 255, 255, 0.12);
+        object-fit: cover;
+        display: block;
+    }
+
+    .concept-name {
+        font-size: clamp(8px, 2vw, 11px);
+        line-height: 1.6;
+        color: #ffe7fb;
+    }
+
     .journey-copy {
         max-width: 760px;
         margin: 8px 20px 16px;
@@ -563,6 +610,10 @@
         .level-grid {
             grid-template-columns: 1fr;
         }
+
+        .concept-switcher {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 </style>
 </head>
@@ -570,7 +621,25 @@
     <!-- Title Screen -->
     <div id="titleScreen" class="screen active">
         <div class="title-logo" id="titleLogo">LUCY'S RUN</div>
-        <div class="lucy-art"></div>
+        <div class="concept-switcher" id="conceptSwitcher">
+            <button class="concept-chip active" data-concept="retro">
+                <img class="concept-thumb" src="assets/concepts/retro/icon.jpg" alt="Concept retro">
+                <span class="concept-name">Retro 8-bit</span>
+            </button>
+            <button class="concept-chip" data-concept="cartoon">
+                <img class="concept-thumb" src="assets/concepts/cartoon/icon.jpg" alt="Concept cartoon">
+                <span class="concept-name">Cartoon 2.5D</span>
+            </button>
+            <button class="concept-chip" data-concept="dreamy">
+                <img class="concept-thumb" src="assets/concepts/dreamy/icon.jpg" alt="Concept poetico onirico">
+                <span class="concept-name">Poetico Onirico</span>
+            </button>
+            <button class="concept-chip" data-concept="glitter">
+                <img class="concept-thumb" src="assets/concepts/glitter/icon.jpg" alt="Concept pop glitter">
+                <span class="concept-name">Pop Glitter</span>
+            </button>
+        </div>
+        <div class="lucy-art" id="lucyArtPreview"></div>
         <div class="journey-copy">Lucy parte da una forma iniziale maschile e, correndo tra le quattro stagioni, si trasforma poco a poco fino a diventare pienamente se stessa.</div>
         <div class="press-start" id="startButton">▶ PRESS START ◀</div>
         <div class="artist-credit">🎤 Un gioco di Marta La Noce 🎶</div>
@@ -666,7 +735,7 @@
             spring: {
                 name: '🌸 PRIMAVERA',
                 song: 'music/primavera.mp3',
-                background: 'assets/season-spring-bg.jpg',
+                background: 'spring',
                 colors: {
                     sky: ['#FFB3D9', '#B3E5FC'],
                     ground: '#90EE90',
@@ -678,7 +747,7 @@
             summer: {
                 name: '☀️ ESTATE',
                 song: 'music/estate.mp3',
-                background: 'assets/season-summer-bg.jpg',
+                background: 'summer',
                 colors: {
                     sky: ['#FFD700', '#FF8C00'],
                     ground: '#F4A460',
@@ -690,7 +759,7 @@
             autumn: {
                 name: '🍂 AUTUNNO',
                 song: 'music/autunno.mp3',
-                background: 'assets/season-autumn-bg.jpg',
+                background: 'autumn',
                 colors: {
                     sky: ['#FF8C00', '#8B4513'],
                     ground: '#CD853F',
@@ -702,7 +771,7 @@
             winter: {
                 name: '❄️ INVERNO',
                 song: 'music/inverno.mp3',
-                background: 'assets/season-winter-bg.jpg',
+                background: 'winter',
                 colors: {
                     sky: ['#87CEEB', '#4169E1'],
                     ground: '#FFFFFF',
@@ -725,11 +794,46 @@
     const JUDGE_MIRROR = [true, false, false];
     const LUCY_MIRROR = [false, false, false, false, false, false];
     const ASSET_VERSION = '20260329-r4';
+    const CONCEPTS = {
+        retro: {
+            label: 'Retro 8-bit',
+            title: 'assets/concepts/retro/title.jpg',
+            icon: 'assets/concepts/retro/icon.jpg',
+            seasonPath: season => `assets/concepts/retro/seasons/${season}.jpg?v=${ASSET_VERSION}`,
+            lucyPath: stage => `assets/concepts/retro/lucy/lucy-stage-${stage}.png?v=${ASSET_VERSION}`,
+            judgePath: judge => `assets/concepts/retro/judges/judge-${judge}.png?v=${ASSET_VERSION}`
+        },
+        cartoon: {
+            label: 'Cartoon 2.5D',
+            title: 'assets/concepts/cartoon/title.jpg',
+            icon: 'assets/concepts/cartoon/icon.jpg',
+            seasonPath: season => `assets/concepts/cartoon/seasons/${season}.jpg?v=${ASSET_VERSION}`,
+            lucyPath: stage => `assets/concepts/cartoon/lucy/lucy-stage-${stage}.png?v=${ASSET_VERSION}`,
+            judgePath: judge => `assets/concepts/cartoon/judges/judge-${judge}.png?v=${ASSET_VERSION}`
+        },
+        dreamy: {
+            label: 'Poetico Onirico',
+            title: 'assets/concepts/dreamy/title.jpg',
+            icon: 'assets/concepts/dreamy/icon.jpg',
+            seasonPath: season => `assets/concepts/dreamy/seasons/${season}.jpg?v=${ASSET_VERSION}`,
+            lucyPath: stage => `assets/concepts/dreamy/lucy/lucy-stage-${stage}.png?v=${ASSET_VERSION}`,
+            judgePath: judge => `assets/concepts/dreamy/judges/judge-${judge}.png?v=${ASSET_VERSION}`
+        },
+        glitter: {
+            label: 'Pop Glitter',
+            title: 'assets/concepts/glitter/title.jpg',
+            icon: 'assets/concepts/glitter/icon.jpg',
+            seasonPath: season => `assets/concepts/glitter/seasons/${season}.jpg?v=${ASSET_VERSION}`,
+            lucyPath: stage => `assets/concepts/glitter/lucy/lucy-stage-${stage}.png?v=${ASSET_VERSION}`,
+            judgePath: judge => `assets/concepts/glitter/judges/judge-${judge}.png?v=${ASSET_VERSION}`
+        }
+    };
     
     // Game State
     let gameState = {
         currentScreen: 'title',
         currentLevel: null,
+        currentConcept: localStorage.getItem('lucy-run-concept') || 'retro',
         score: 0,
         isPlaying: false,
         frame: 0,
@@ -1126,34 +1230,64 @@
     let currentMusic = null;
     let pendingMusicLevel = null;
     const backgroundImages = {};
-    const lucyStageImages = [];
-    const judgeImages = [];
+    const lucyStageImages = {};
+    const judgeImages = {};
 
-    Object.values(CONFIG.levels).forEach(level => {
-        const img = new Image();
-        img.src = level.background;
-        backgroundImages[level.background] = img;
-    });
+    function preloadConceptAssets(slug) {
+        if (!CONCEPTS[slug]) return;
+        if (!backgroundImages[slug]) backgroundImages[slug] = {};
+        if (!lucyStageImages[slug]) lucyStageImages[slug] = [];
+        if (!judgeImages[slug]) judgeImages[slug] = [];
 
-    for (let stage = 0; stage <= 5; stage++) {
-        const img = new Image();
-        img.src = `assets/lucy-stages/lucy-stage-${stage}-v2.png?v=${ASSET_VERSION}`;
-        lucyStageImages[stage] = img;
+        Object.values(CONFIG.levels).forEach(level => {
+            if (!backgroundImages[slug][level.background]) {
+                const img = new Image();
+                img.src = CONCEPTS[slug].seasonPath(level.background);
+                backgroundImages[slug][level.background] = img;
+            }
+        });
+
+        for (let stage = 0; stage <= 5; stage++) {
+            if (!lucyStageImages[slug][stage]) {
+                const img = new Image();
+                img.src = CONCEPTS[slug].lucyPath(stage);
+                lucyStageImages[slug][stage] = img;
+            }
+        }
+
+        for (let judge = 1; judge <= 3; judge++) {
+            if (!judgeImages[slug][judge - 1]) {
+                const img = new Image();
+                img.src = CONCEPTS[slug].judgePath(judge);
+                judgeImages[slug][judge - 1] = img;
+            }
+        }
     }
 
-    for (let judge = 1; judge <= 3; judge++) {
-        const img = new Image();
-        img.src = `assets/judges/judge-${judge}.png?v=${ASSET_VERSION}`;
-        judgeImages[judge - 1] = img;
+    function applyConcept(slug) {
+        if (!CONCEPTS[slug]) return;
+        gameState.currentConcept = slug;
+        localStorage.setItem('lucy-run-concept', slug);
+        preloadConceptAssets(slug);
+
+        const titlePath = `${CONCEPTS[slug].title}?v=${ASSET_VERSION}`;
+        const backgroundStyle = `linear-gradient(180deg, rgba(7, 4, 20, 0.64), rgba(20, 2, 40, 0.86)), url('${titlePath}') center/cover no-repeat`;
+        document.getElementById('titleScreen').style.background = backgroundStyle;
+        document.getElementById('levelMenu').style.background = backgroundStyle;
+        document.getElementById('lucyArtPreview').style.background = `linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)), url('${titlePath}') center/cover no-repeat`;
+
+        document.querySelectorAll('.concept-chip').forEach(chip => {
+            chip.classList.toggle('active', chip.dataset.concept === slug);
+        });
     }
 
     function getProcessedLucyStage(stage) {
-        const source = lucyStageImages[stage];
+        const source = (lucyStageImages[gameState.currentConcept] || [])[stage];
         return source && source.complete && source.naturalWidth ? source : null;
     }
 
     function getProcessedJudge(index) {
-        const source = judgeImages[index];
+        const source = (judgeImages[gameState.currentConcept] || [])[index];
         return source && source.complete && source.naturalWidth ? source : null;
     }
     
@@ -1393,7 +1527,7 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Seasonal background art
-        const bgImage = backgroundImages[level.background];
+        const bgImage = backgroundImages[gameState.currentConcept]?.[level.background];
         if (bgImage && bgImage.complete) {
             ctx.save();
             ctx.globalAlpha = 0.72;
@@ -1558,6 +1692,12 @@
         document.getElementById('startButton').addEventListener('click', () => {
             showScreen('levelMenu');
         });
+
+        document.querySelectorAll('.concept-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                applyConcept(chip.dataset.concept);
+            });
+        });
         
         document.getElementById('backToTitle').addEventListener('click', () => {
             showScreen('titleScreen');
@@ -1624,6 +1764,9 @@
                 e.preventDefault();
             }
         }, { passive: false });
+
+        preloadConceptAssets('retro');
+        applyConcept(gameState.currentConcept);
     });
     
 </script>
