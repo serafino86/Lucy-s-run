@@ -1108,9 +1108,7 @@
     let pendingMusicLevel = null;
     const backgroundImages = {};
     const lucyStageImages = [];
-    const lucyStageProcessed = [];
     const judgeImages = [];
-    const judgeProcessed = [];
 
     Object.values(CONFIG.levels).forEach(level => {
         const img = new Image();
@@ -1120,52 +1118,24 @@
 
     for (let stage = 0; stage <= 5; stage++) {
         const img = new Image();
-        img.src = `assets/lucy-stages/lucy-stage-${stage}.jpg`;
+        img.src = `assets/lucy-stages/lucy-stage-${stage}.png`;
         lucyStageImages[stage] = img;
-        lucyStageProcessed[stage] = null;
     }
 
     for (let judge = 1; judge <= 3; judge++) {
         const img = new Image();
-        img.src = `assets/judges/judge-${judge}.jpg`;
+        img.src = `assets/judges/judge-${judge}.png`;
         judgeImages[judge - 1] = img;
-        judgeProcessed[judge - 1] = null;
-    }
-
-    function chromaProcess(source, cache, cacheIndex) {
-        if (!source || !source.complete || !source.naturalWidth) return null;
-        if (cache[cacheIndex]) return cache[cacheIndex];
-
-        const off = document.createElement('canvas');
-        off.width = source.naturalWidth;
-        off.height = source.naturalHeight;
-        const offCtx = off.getContext('2d');
-        offCtx.drawImage(source, 0, 0);
-        const imageData = offCtx.getImageData(0, 0, off.width, off.height);
-        const data = imageData.data;
-
-        for (let i = 0; i < data.length; i += 4) {
-            const r = data[i];
-            const g = data[i + 1];
-            const b = data[i + 2];
-            if (g > 150 && g > r * 1.25 && g > b * 1.25) {
-                data[i + 3] = 0;
-            }
-        }
-
-        offCtx.putImageData(imageData, 0, 0);
-        cache[cacheIndex] = off;
-        return off;
     }
 
     function getProcessedLucyStage(stage) {
         const source = lucyStageImages[stage];
-        return chromaProcess(source, lucyStageProcessed, stage);
+        return source && source.complete && source.naturalWidth ? source : null;
     }
 
     function getProcessedJudge(index) {
         const source = judgeImages[index];
-        return chromaProcess(source, judgeProcessed, index);
+        return source && source.complete && source.naturalWidth ? source : null;
     }
     
     function initGame(level) {
